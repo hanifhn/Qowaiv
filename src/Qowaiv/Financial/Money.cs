@@ -1,7 +1,4 @@
-﻿using Qowaiv.Conversion.Financial;
-using Qowaiv.Formatting;
-using Qowaiv.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +8,9 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Qowaiv.Conversion.Financial;
+using Qowaiv.Formatting;
+using Qowaiv.Json;
 
 namespace Qowaiv.Financial
 {
@@ -34,7 +34,7 @@ namespace Qowaiv.Financial
         private Currency m_Currency;
 
         /// <summary>Gets the currency of the money.</summary>
-        public Currency Currency { get { return m_Currency; } }
+        public Currency Currency => m_Currency;
 
         #endregion
 
@@ -43,15 +43,12 @@ namespace Qowaiv.Financial
         /// <summary>Adds money.</summary>
         /// <param name="l">The left operand.</param>
         /// <param name="r">The right operand</param>
-        public Money Add(Money l, Money r)
-        {
-            return Create(l.m_Value + r.m_Value, HaveSameCurrency(l, r, "addition"));
-        }
+        public Money Add(Money l, Money r) => Create(l.m_Value + r.m_Value, HaveSameCurrency(l, r, "addition"));
 
         /// <summary>Adds money.</summary>
         /// <param name="l">The left operand.</param>
         /// <param name="r">The right operand</param>
-        public static Money operator +(Money l, Money r) { return l + r; }
+        public static Money operator +(Money l, Money r) => l + r;
 
         [DebuggerStepThrough]
         private static Currency HaveSameCurrency(Money l, Money r, string operation)
@@ -90,7 +87,7 @@ namespace Qowaiv.Financial
         /// <remarks>
         /// Returns null as no schema is required.
         /// </remarks>
-        XmlSchema IXmlSerializable.GetSchema() { return null; }
+        XmlSchema IXmlSerializable.GetSchema() => null;
 
         /// <summary>Reads the Money from an <see href="XmlReader"/>.</summary>
         /// <remarks>
@@ -546,10 +543,13 @@ namespace Qowaiv.Financial
         {
             var info = NumberFormatInfo.GetInstance(formatProvider);
             info = (NumberFormatInfo)info.Clone();
-            info.NumberDecimalDigits = info.CurrencyDecimalDigits;
-            info.NumberDecimalSeparator = info.CurrencyDecimalSeparator;
-            info.NumberGroupSeparator = info.CurrencyGroupSeparator;
-            info.NumberGroupSizes = info.CurrencyGroupSizes;
+
+            info.NumberDecimalDigits = /*   */ info.CurrencyDecimalDigits;
+            info.NumberDecimalSeparator = /**/ info.CurrencyDecimalSeparator;
+            info.NumberGroupSeparator = /*  */ info.CurrencyGroupSeparator;
+            info.NumberGroupSizes = /*      */ info.CurrencyGroupSizes;
+            info.NumberNegativePattern = /* */ info.CurrencyNegativePattern;
+
             return info;
         }
     }
